@@ -91,7 +91,7 @@ function initLogin() {
         } else if (username === 'owner' && password === '123') {
             window.location.href = 'owner_dashboard.html'; 
         } else {
-            loginMessage.textContent = '❌ Incorrect username or password. Please try again.';
+            loginMessage.textContent = 'Incorrect username or password. Please try again.';
             loginMessage.style.display = 'block';
         }
     });
@@ -99,9 +99,8 @@ function initLogin() {
 
 
 // FRONT DESK LOGIC
-// --- 4. FRONT DESK LOGIC ---
 function initFrontDeskDashboard() {
-    // CRITICAL: Render the part select dropdowns using the latest data
+
     renderPartSelects(); 
     
     const newBookingModal = document.getElementById('bookingModal');
@@ -114,8 +113,8 @@ function initFrontDeskDashboard() {
     const delayedBookings = document.getElementById('delayedBookings');
     const jobDetailModal = document.getElementById('jobDetailModalFdesk');
     
-    // Renders the job detail modal content (View Only)
-    // Renders the job detail modal content (View Only)
+    
+  
     function openJobDetail(id) {
         const job = jobs.find(j => j.id === id);
         if (!job) return;
@@ -127,7 +126,7 @@ function initFrontDeskDashboard() {
         document.getElementById('detailJobStatus').textContent = job.status;
         document.getElementById('detailJobStatus').className = `status-badge status-${job.status.toLowerCase().replace(/\s/g, '-')}`;
         
-        // --- Billing & Payment Logic Area ---
+   
         const paymentActionDiv = document.getElementById('paymentActionDiv');
         paymentActionDiv.innerHTML = ''; // Clear previous actions
 
@@ -173,24 +172,23 @@ function initFrontDeskDashboard() {
                 } else {
                     gcashGroup.style.display = 'none';
                     gcashInput.required = false;
-                    gcashInput.value = ''; // Clear input if switching away from Gcash
+                    gcashInput.value = ''; 
                 }
             };
 
             methodSelect.addEventListener('change', toggleGcashInput);
-            toggleGcashInput(); // Set initial state (Cash is default)
-            
-            // Attach event listener for the payment button
+            toggleGcashInput(); 
+
             btnMarkPaid.addEventListener('click', () => {
                 const selectedMethod = methodSelect.value;
                 const referenceNo = gcashInput.value.trim();
 
-                if (selectedMethod === 'Gcash' && referenceNo.length < 5) { // Basic validation
+                if (selectedMethod === 'Gcash' && referenceNo.length < 5) { 
                     alert('Please enter a valid Gcash Reference Number.');
                     return;
                 }
                 
-                // Find the job object and add payment details
+               
                 const jobToUpdate = jobs.find(j => j.id === id);
                 if (jobToUpdate) {
                     jobToUpdate.paymentMethod = selectedMethod;
@@ -204,10 +202,9 @@ function initFrontDeskDashboard() {
         } else {
             paymentActionDiv.innerHTML = '<p style="margin-top: 15px;">Waiting for mechanic to mark job as Completed...</p>';
         }
-        // --- END Billing & Payment Logic Area ---
 
         
-        // Display required/used parts and their feasibility (reads from persistent inventory)
+        // Display required/used parts
         const detailPartsList = document.getElementById('detailPartsList');
         detailPartsList.innerHTML = '';
         if (job.partsUsed.length > 0) {
@@ -229,9 +226,8 @@ function initFrontDeskDashboard() {
     }
 
 
-    // Function to update the Front Desk Dashboard (Queue and Metrics)
+    // Function to update the Front Desk
     function updateDashboardView() {
-        // FIX: Only exclude 'Paid' jobs, allowing 'Completed' and 'Confirmed' to show for billing/customer service.
         const activeJobs = jobs.filter(j => j.status !== 'Paid'); 
         const delayedJobs = jobs.filter(j => j.status === 'Delayed');
         
@@ -261,7 +257,7 @@ function initFrontDeskDashboard() {
         });
     }
 
-    // --- New Booking Modal Logic (Form/Feasibility check) ---
+    // --- New Booking Modal Logic
     const partSelect = document.getElementById('partSelectFdesk');
     const partQuantityInput = document.getElementById('partQuantityFdesk');
     const btnAddPart = document.getElementById('btnAddPartFdesk');
@@ -349,20 +345,18 @@ function initFrontDeskDashboard() {
         updateDashboardView();
     });
 
-    // --- Close listeners for Front Desk Modals ---
-    // Closes New Booking Modal
+
     document.querySelector('#bookingModal .close-button').addEventListener('click', () => {
         newBookingModal.style.display = 'none';
         requiredParts = [];
     });
-    
-    // Closes Job Detail Modal (Fdesk)
+
     document.querySelector('#jobDetailModalFdesk .close-button').addEventListener('click', () => {
         jobDetailModal.style.display = 'none';
     });
 
     updateDashboardView(); 
-} // End of initFrontDeskDashboard
+} 
 
 
 //MECHANIC DASHBOARD
@@ -383,7 +377,6 @@ function initMechanicDashboard() {
     
     function renderJobList() {
         jobListContainer.innerHTML = '';
-        // UPDATED: Filter out 'Completed' AND 'Paid' jobs from the mechanic's view
         jobs.filter(j => j.status !== 'Completed' && j.status !== 'Paid').forEach(job => {
             const jobCard = document.createElement('div');
             jobCard.className = 'job-card';
@@ -472,14 +465,14 @@ function initMechanicDashboard() {
                 alert(`Part logged and ${quantity} deducted from stock. Current Stock: ${item.stock}`);
 
                 if (item.stock <= item.reorderLevel) {
-                    stockAlertsDiv.textContent = `🚨 Low Stock Alert: ${selectedPartName} is now ${item.stock}. Owner has been notified.`;
+                    stockAlertsDiv.textContent = `Low Stock Alert: ${selectedPartName} is now ${item.stock}. Owner has been notified.`;
                     stockAlertsDiv.style.display = 'block';
                 } else {
                     stockAlertsDiv.style.display = 'none';
                 }
 
             } else {
-                alert(`🚫 Insufficient Stock for ${selectedPartName}. Available: ${item.stock}. Cannot log part.`);
+                alert(`Insufficient Stock for ${selectedPartName}. Available: ${item.stock}. Cannot log part.`);
             }
         }
     });
@@ -497,7 +490,6 @@ function initMechanicDashboard() {
 
 
 // OWNER DASHBOARD
-// --- 6. OWNER DASHBOARD LOGIC (Updated to include booking view) ---
 function initOwnerDashboard() {
     const inventoryTableBody = document.querySelector('#inventoryTable tbody');
     if (!inventoryTableBody) return; 
@@ -514,12 +506,11 @@ function initOwnerDashboard() {
     const ownerTotalActive = document.getElementById('ownerTotalActive');
     const ownerDelayedJobs = document.getElementById('ownerDelayedJobs');
 
-    // NEW FUNCTION: Owner's view-only detail function (based on Front Desk's logic)
+
     function openOwnerJobDetail(id) {
         const job = jobs.find(j => j.id === id);
         if (!job) return;
 
-        // Owner uses the same modal as Fdesk for viewing
         const jobDetailModal = document.getElementById('jobDetailModalFdesk');
         
         // Display job details
@@ -529,7 +520,7 @@ function initOwnerDashboard() {
         document.getElementById('detailJobStatus').textContent = job.status;
         document.getElementById('detailJobStatus').className = `status-badge status-${job.status.toLowerCase().replace(/\s/g, '-')}`;
         
-        // --- Billing & Payment Logic Area (Owner View - No Action) ---
+        //Billing & Payment Logic Area
         const paymentActionDiv = document.getElementById('paymentActionDiv');
         paymentActionDiv.innerHTML = ''; // Clear previous actions
 
@@ -552,10 +543,9 @@ function initOwnerDashboard() {
         } else {
             paymentActionDiv.innerHTML = '<p style="margin-top: 15px;">Job not yet completed or paid.</p>';
         }
-        // --- END Billing & Payment Logic Area ---
 
         
-        // Display required/used parts and their feasibility (reads from persistent inventory)
+        // Display required/used parts
         const detailPartsList = document.getElementById('detailPartsList');
         detailPartsList.innerHTML = '';
         if (job.partsUsed.length > 0) {
@@ -581,9 +571,9 @@ function initOwnerDashboard() {
         return Object.keys(inventory).map(key => ({ ...inventory[key], name: key }));
     }
 
-    // UPDATED FUNCTION: Renders the Active Job List (Now matching Front Desk view and is clickable)
+    // Renders the Active Job List 
     function renderOwnerJobList() {
-        // FIX: Only exclude 'Paid' jobs, allowing 'Completed' and 'Confirmed' to show for oversight.
+    
         const activeJobs = jobs.filter(j => j.status !== 'Paid'); 
         const delayedJobs = jobs.filter(j => j.status === 'Delayed');
 
@@ -602,18 +592,17 @@ function initOwnerDashboard() {
             const jobCard = document.createElement('div');
             jobCard.className = 'job-card';
             jobCard.dataset.jobId = job.id;
-            jobCard.style.cursor = 'pointer'; // Make it clickable
+            jobCard.style.cursor = 'pointer';
             
             const statusClass = job.status.toLowerCase().replace(/\s/g, '-');
-            
-            // SIMPLIFIED HTML TO MATCH FRONT DESK CARD
+     
             jobCard.innerHTML = `
                 <h4>${job.serviceType} for ${job.plateNo}</h4>
                 <p>Customer: ${job.customer}</p>
                 <p>Status: <span class="status-badge status-${statusClass}">${job.status}</span></p>
             `;
             
-            // ADD CLICK LISTENER
+     
             jobCard.addEventListener('click', () => openOwnerJobDetail(job.id));
 
             jobListContainer.appendChild(jobCard);
@@ -630,7 +619,7 @@ function initOwnerDashboard() {
             row.style.cursor = 'pointer'; 
             
             if (item.stock <= item.reorderLevel) {
-                row.style.backgroundColor = '#fff3cd'; // Highlight low stock
+                row.style.backgroundColor = '#fff3cd'; 
             }
 
             row.insertCell().textContent = item.name;
@@ -661,7 +650,7 @@ function initOwnerDashboard() {
         editItemModal.style.display = 'block';
     }
 
-    // Renders Alerts (unchanged)
+    // Renders Alerts
     function renderAlerts() {
         const alertList = document.getElementById('alertList');
         alertList.innerHTML = '';
@@ -696,7 +685,7 @@ function initOwnerDashboard() {
     }
 
 
-    // --- Add New Item Logic (unchanged) ---
+    // Add New Item 
     addItemForm.addEventListener('submit', (event) => {
         event.preventDefault();
         constraintMessage.style.display = 'none';
@@ -729,7 +718,7 @@ function initOwnerDashboard() {
         }
     });
     
-    // --- Edit Item Logic (unchanged) ---
+    //Edit Item 
     editItemForm.addEventListener('submit', (event) => {
         event.preventDefault();
         editConstraintMessage.style.display = 'none';
@@ -750,7 +739,7 @@ function initOwnerDashboard() {
         }
         
         if (newName !== originalName && inventory[newName]) {
-            editConstraintMessage.textContent = `❌ ERROR: An item named '${newName}' already exists.`;
+            editConstraintMessage.textContent = `ERROR: An item named '${newName}' already exists.`;
             editConstraintMessage.style.display = 'block';
             isValid = false;
         }
@@ -764,23 +753,22 @@ function initOwnerDashboard() {
             
             saveData(); 
             
-            alert(`✅ Item '${newName}' successfully updated! Changes will reflect in other views upon refresh.`);
+            alert(`Item '${newName}' successfully updated! Changes will reflect in other views upon refresh.`);
             editItemModal.style.display = 'none';
 
-            // Refresh the display with the new data
+        
             renderInventoryTable();
             renderAlerts(); 
-            renderOwnerJobList(); // Recalculate feasibility/alerts if inventory affects jobs
+            renderOwnerJobList();
         }
     });
     
-    // Close listener for Edit Modal (unchanged)
+
     document.querySelector('#editItemModal .close-button').addEventListener('click', () => {
         editItemModal.style.display = 'none';
     });
 
 
-    // Initial load: NOW CALLS THE JOB RENDER FUNCTION
     renderOwnerJobList();
     renderInventoryTable();
     renderAlerts();
@@ -788,8 +776,8 @@ function initOwnerDashboard() {
 
 // Helper to calculate the cost of parts used in a job
 function calculateJobCost(job) {
-    // Assuming a standard labor fee of ₱2500 per job for simplicity
-    const LABOR_FEE = 2500.00; 
+   
+    const LABOR_FEE = 500.00; 
     let partsCost = 0;
 
     job.partsUsed.forEach(part => {
@@ -798,24 +786,21 @@ function calculateJobCost(job) {
             partsCost += part.qty * inventoryItem.price;
         }
     });
-    
-    // Total cost = Parts Cost + Labor Fee
+
     return partsCost + LABOR_FEE;
 }
 
-// Helper to update job status and refresh views
 function updateJobStatus(jobId, newStatus) {
     const job = jobs.find(j => j.id === jobId);
     if (job) {
         job.status = newStatus;
         saveData();
-        // Since this is called from the Front Desk, update the front desk view
-        // The dashboards will naturally refresh upon next page load/interaction.
+
         alert(`Job ${job.plateNo} successfully marked as ${newStatus}.`); 
-        // Force refresh the front desk queue view after updating status
-        const updateDashboardView = document.getElementById('bookingList').parentElement.querySelector('p'); // Find a reference point
-        if (updateDashboardView) updateDashboardView.closest('.card').querySelector('.job-cards-grid').innerHTML = ''; // Clear to force refresh
-        window.location.reload(); // Simplest way to ensure all dashboards sync data
+
+        const updateDashboardView = document.getElementById('bookingList').parentElement.querySelector('p'); 
+        if (updateDashboardView) updateDashboardView.closest('.card').querySelector('.job-cards-grid').innerHTML = ''; 
+        window.location.reload();
     }
 }
 
