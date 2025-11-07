@@ -104,6 +104,19 @@
                 </form>
             </div>
         </section>
+        <section id="currentBookingsSection" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: #2F3590;">Active Service Bookings</h3>
+                <div>
+                    <span style="font-weight: bold; margin-right: 20px;">Total Active: <span id="ownerTotalActive" style="color: #2F3590;">0</span></span>
+                    <span style="font-weight: bold;">Delayed Jobs: <span id="ownerDelayedJobs" style="color: #E9222E;">0</span></span>
+                </div>
+            </div>
+            
+            <div id="ownerJobListContainer" class="job-cards-grid">
+                <p style="grid-column: 1 / -1;">Loading active jobs...</p>
+            </div>
+        </section>
     </main>
 
     <script src="/controller/script.js"></script> 
