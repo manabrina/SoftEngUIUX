@@ -134,21 +134,70 @@ function initFrontDeskDashboard() {
         if (job.status === 'Completed') {
             const totalCost = calculateJobCost(job); // Calculate the total
             
-            // Display summary and payment button
+            // Display summary and payment selection
             paymentActionDiv.innerHTML = `
                 <hr style="margin-top: 20px;">
                 <h4 style="color: var(--color-jewel);">Payment Required</h4>
                 <p style="font-size: 1.2em; font-weight: bold;">
                     Total Estimated Cost: ₱${totalCost.toFixed(2)}
                 </p>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="paymentMethodSelect" style="display: block; font-weight: bold;">Select Payment Method:</label>
+                    <select id="paymentMethodSelect" class="form-control" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                        <option value="Cash">Cash</option>
+                        <option value="Gcash">Gcash</option>
+                    </select>
+                </div>
+                
+                <div id="gcashRefInputGroup" style="display: none; margin-bottom: 15px;">
+                    <label for="gcashReference" style="display: block; font-weight: bold;">Gcash Reference No.:</label>
+                    <input type="text" id="gcashReference" class="form-control" placeholder="Enter Gcash Reference Number" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+                
                 <button id="btnMarkPaid" class="btn btn-success" style="width: 100%; margin-top: 10px;">
                     Mark as Paid & Close Job
                 </button>
             `;
             
+            // Attach dynamic listeners *after* rendering
+            const methodSelect = document.getElementById('paymentMethodSelect');
+            const gcashGroup = document.getElementById('gcashRefInputGroup');
+            const gcashInput = document.getElementById('gcashReference');
+            const btnMarkPaid = document.getElementById('btnMarkPaid');
+
+            const toggleGcashInput = () => {
+                if (methodSelect.value === 'Gcash') {
+                    gcashGroup.style.display = 'block';
+                    gcashInput.required = true;
+                } else {
+                    gcashGroup.style.display = 'none';
+                    gcashInput.required = false;
+                    gcashInput.value = ''; // Clear input if switching away from Gcash
+                }
+            };
+
+            methodSelect.addEventListener('change', toggleGcashInput);
+            toggleGcashInput(); // Set initial state (Cash is default)
+            
             // Attach event listener for the payment button
-            document.getElementById('btnMarkPaid').addEventListener('click', () => {
-                updateJobStatus(job.id, 'Paid');
+            btnMarkPaid.addEventListener('click', () => {
+                const selectedMethod = methodSelect.value;
+                const referenceNo = gcashInput.value.trim();
+
+                if (selectedMethod === 'Gcash' && referenceNo.length < 5) { // Basic validation
+                    alert('Please enter a valid Gcash Reference Number.');
+                    return;
+                }
+                
+                // Find the job object and add payment details
+                const jobToUpdate = jobs.find(j => j.id === id);
+                if (jobToUpdate) {
+                    jobToUpdate.paymentMethod = selectedMethod;
+                    jobToUpdate.gcashRef = (selectedMethod === 'Gcash' ? referenceNo : null);
+                }
+                
+                updateJobStatus(id, 'Paid');
                 document.getElementById('jobDetailModalFdesk').style.display = 'none';
             });
 
@@ -484,7 +533,7 @@ function initOwnerDashboard() {
         const paymentActionDiv = document.getElementById('paymentActionDiv');
         paymentActionDiv.innerHTML = ''; // Clear previous actions
 
-        if (job.status === 'Completed') {
+        if (job.status === 'Completed' || job.status === 'Paid') {
             const totalCost = calculateJobCost(job); 
             
             // Display summary only (Owner does not have 'Mark as Paid' button)
@@ -494,7 +543,11 @@ function initOwnerDashboard() {
                 <p style="font-size: 1.2em; font-weight: bold;">
                     Total Estimated Cost: ₱${totalCost.toFixed(2)}
                 </p>
-                <p style="margin-top: 10px; color: #E9222E; font-weight: bold;">(View Only: Payment handled by Front Desk)</p>
+                <p style="margin-top: 5px;">
+                    Payment Status: <strong>${job.status === 'Paid' ? 'PAID' : 'COMPLETED - Awaiting Payment'}</strong>
+                </p>
+                ${job.paymentMethod ? `<p style="margin-top: 5px; font-size: 0.9em;">Method: ${job.paymentMethod} ${job.gcashRef ? `(Ref: ${job.gcashRef})` : ''}</p>` : ''}
+                <p style="margin-top: 10px; color: #E9222E; font-weight: bold;">(View Only: Payment managed by Front Desk)</p>
             `;
         } else {
             paymentActionDiv.innerHTML = '<p style="margin-top: 15px;">Job not yet completed or paid.</p>';
