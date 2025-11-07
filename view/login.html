@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Davao Supreme Motors</title>
+    <style>
+        :root {
+            --color-white: #FFFFFF;
+            --color-alizarin-crimson: #E9222E;
+            --color-bay-of-many: #2F3590;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0e6eb;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Login Layout */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            text-align: center;
+            background-color: var(--color-white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .login-card h2 {
+            color: var(--color-bay-of-many);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: calc(100% - 22px);
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--color-bay-of-many);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover {
+            background-color: #474cb0; 
+        }
+
+        .login-message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffeaea;
+            border: 1px solid var(--color-alizarin-crimson);
+            color: var(--color-alizarin-crimson);
+            font-weight: bold;
+            display: none;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Davao Supreme Motors</h2>
+           
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                <p id="loginMessage" class="login-message">
+                    </p>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
+                    const loginMessage = document.getElementById('loginMessage');
+
+                    loginMessage.style.display = 'none';
+
+                    if (username === 'frontdesk' && password === 'admin') {
+                        window.location.href = 'frontdesk_dashboard.html'; 
+                    } else if (username === 'mechanic' && password === 'admin') {
+                        window.location.href = 'mechanic_dashboard.html';
+                    } else if (username === 'owner' && password === 'admin') {
+                         window.location.href = 'owner_dashboard.html'; 
+                    } else {
+
+                        loginMessage.textContent = 'Incorrect username or password. Please try again.';
+                        loginMessage.style.display = 'block';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

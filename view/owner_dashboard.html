@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Portal - Davao Supreme Motors</title>
+    <link rel="stylesheet" href="/model/style.css"> 
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>Davao Supreme Motors <span class="role-tag" style="background-color: #2F3590;">Management Portal</span></h1>
+            <nav>
+                <a href="login.html" class="btn btn-logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content-area">
+        <h2 style="color: #2F3590;">Critical System Alerts & Management</h2>
+        
+        <section id="alertsSection" class="card" style="border: 2px solid #E9222E;">
+            <h3 style="color: #E9222E;">🚨 Inventory and Booking Alerts (Automation Output)</h3>
+            <ul id="alertList" style="list-style-type: none; padding: 0;">
+                <li style="color: #E9222E; font-weight: bold; margin-bottom: 10px;">Low Stock: Oil Filter is now 4. Reorder immediately. (Triggered by Mechanic)</li>
+                <li style="color: #ff8800; font-weight: bold;">Booking Delayed: Tires unavailable for Plate XYZ 789. (Triggered by Front Desk)</li>
+                <li style="color: #ff8800; font-weight: bold;">Job On Hold: Brake Repair needs part. (Triggered by Mechanic)</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Inventory Management</h2>
+                <button class="btn btn-primary" onclick="document.getElementById('addItemModal').style.display='block';">+ Add New Item</button>
+            </div>
+            
+            <table id="inventoryTable" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                <thead>
+                    <tr style="background-color: #f0f0f5; color: #2F3590;">
+                        <th style="padding: 10px; text-align: left;">Item Name</th>
+                        <th style="padding: 10px;">Stock</th>
+                        <th style="padding: 10px;">Reorder Level</th>
+                        <th style="padding: 10px;">Unit Price</th>
+                        <th style="padding: 10px;">Expiration Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </section>
+        
+        <section id="addItemModal" class="modal">
+            <div class="modal-content" style="max-width: 500px;">
+                <span class="close-button" onclick="document.getElementById('addItemModal').style.display='none';">&times;</span>
+                <h3 style="color: #2F3590;">Add New Inventory Item</h3>
+                <form id="addItemForm">
+                    <div class="form-group">
+                        <label>Item Name:</label><input type="text" id="itemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity In Stock:</label><input type="number" id="itemStock" value="1" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Reorder Level:</label><input type="number" id="itemReorder" value="5" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Price (Mandatory Constraint):</label><input type="number" id="itemPrice" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiration Date (Validation/Warning):</label><input type="date" id="itemExpDate">
+                    </div>
+
+                    <p id="constraintMessage" class="login-message" style="margin-bottom: 20px;"></p>
+                    
+                    <button type="submit" class="btn btn-success" style="width: 100%;">Save Item</button>
+                </form>
+            </div>
+        </section>
+        <section id="editItemModal" class="modal">
+            <div class="modal-content" style="max-width: 500px;">
+                <span class="close-button">&times;</span>
+                <h3 style="color: #2F3590;">Edit Inventory Item</h3>
+                <form id="editItemForm">
+                    <input type="hidden" id="editItemOriginalName"> 
+                    
+                    <label for="editItemName">Part Name:</label>
+                    <input type="text" id="editItemName" required>
+
+                    <label for="editItemStock">Quantity in Stock:</label>
+                    <input type="number" id="editItemStock" min="0" required>
+
+                    <label for="editItemReorder">Reorder Level:</label>
+                    <input type="number" id="editItemReorder" min="0" required>
+                    
+                    <label for="editItemPrice">Unit Price (₱):</label>
+                    <input type="number" id="editItemPrice" min="0.01" step="0.01" required>
+
+                    <label for="editItemExpDate">Expiry Date:</label>
+                    <input type="date" id="editItemExpDate">
+                    
+                    <p id="editConstraintMessage" class="constraint-message" style="display: none; color: red; margin-top: 10px;"></p>
+                    
+                    <button type="submit" id="btnUpdateItem" style="background-color: #2F3590; margin-top: 20px;">Update Item</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="/controller/script.js"></script> 
+</body>
+</html>

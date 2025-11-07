@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanic Portal - Davao Supreme Motors</title>
+    <link rel="stylesheet" href="/model/style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>Davao Supreme Motors <span class="role-tag">Mechanic Portal</span></h1>
+            <nav>
+                <a href="login.html" class="btn btn-logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content-area">
+        <section class="job-list-section card">
+            <h2>My Assigned Jobs</h2>
+            <div id="jobList" class="job-cards-grid">
+                </div>
+        </section>
+
+        <section id="jobDetailModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h3 id="modalJobTitle">Job Details: Service for [Plate No.]</h3>
+                <div class="job-info-grid">
+                    <div><strong>Customer:</strong> <span id="modalCustomerName">Juan Dela Cruz</span></div>
+                    <div><strong>Plate No:</strong> <span id="modalPlateNo">KJH 123</span></div>
+                    <div><strong>Service Type:</strong> <span id="modalServiceType">Full PMS</span></div>
+                    <div><strong>Status:</strong> <span id="modalJobStatus" class="status-badge status-pending">Pending</span></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="btnStartJob">Start Job</button>
+                    <button class="btn btn-warn" id="btnOnHold">Place On Hold (Needs Part)</button>
+                    <button class="btn btn-success" id="btnCompleteJob">Mark as Completed</button>
+                </div>
+
+                <hr>
+
+                <h4>Parts Used & Stock Deduction</h4>
+                <div class="parts-logging">
+                    <select id="partSelect">
+                        <option value="">Select Part</option>
+                        <option value="Oil Filter">Oil Filter</option>
+                        <option value="Brake Pad">Brake Pad</option>
+                        <option value="Spark Plug">Spark Plug</option>
+                        <option value="Tire">Tire</option>
+                    </select>
+                    <input type="number" id="partQuantity" value="1" min="1">
+                    <button class="btn btn-secondary" id="btnAddPart">Add Part</button>
+                </div>
+
+                <div id="loggedPartsList" class="logged-parts-list">
+                    <h5>Logged Parts:</h5>
+                    </div>
+
+                <div id="stockAlerts" class="stock-alerts">
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/controller/script.js"></script>
+</body>
+</html>
