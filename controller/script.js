@@ -209,7 +209,7 @@ function initFrontDeskDashboard() {
             job.partsUsed.forEach(part => {
                 const li = document.createElement('li');
                 const partInStock = inventory[part.name]?.stock || 0;
-                const feasibilityText = (partInStock >= part.qty) ? '✅ Feasible' : `❌ Low Stock (Available: ${partInStock})`;
+                const feasibilityText = (partInStock >= part.qty) ? 'Feasible' : `Low Stock (Available: ${partInStock})`;
                 li.innerHTML = `<span>${part.name} x ${part.qty}</span> 
                                 <span style="font-size: 0.9em; color: ${(partInStock >= part.qty) ? '#19A554' : '#E9222E'};">${feasibilityText}</span>`;
                 ul.appendChild(li);
@@ -307,7 +307,7 @@ function initFrontDeskDashboard() {
         const allFeasible = renderRequiredParts();
         
         if (!allFeasible) {
-            feasibilityAlert.textContent = `🚨 STOCK UNAVAILABLE: This Booking will be flagged as 'Delayed'. Owner alerted.`;
+            feasibilityAlert.textContent = `STOCK UNAVAILABLE: This Booking will be flagged as 'Delayed'. Owner alerted.`;
             feasibilityAlert.style.display = 'block'; 
             btnFinalizeBooking.textContent = 'Finalize Booking (Status: Delayed)';
             btnFinalizeBooking.style.backgroundColor = '#E9222E'; 
@@ -335,7 +335,7 @@ function initFrontDeskDashboard() {
 
         saveData(); 
         
-        alert(`✅ Booking finalized for ${plateNo} with status: ${finalStatus}. Queue Updated.`);
+        alert(`Booking finalized for ${plateNo} with status: ${finalStatus}. Queue Updated.`);
         
         newBookingModal.style.display = 'none';
         requiredParts = [];
@@ -550,7 +550,7 @@ function initOwnerDashboard() {
             job.partsUsed.forEach(part => {
                 const li = document.createElement('li');
                 const partInStock = inventory[part.name]?.stock || 0;
-                const feasibilityText = (partInStock >= part.qty) ? '✅ Feasible' : `❌ Low Stock (Available: ${partInStock})`;
+                const feasibilityText = (partInStock >= part.qty) ? 'Feasible' : `Low Stock (Available: ${partInStock})`;
                 li.innerHTML = `<span>${part.name} x ${part.qty}</span> 
                                 <span style="font-size: 0.9em; color: ${(partInStock >= part.qty) ? '#19A554' : '#E9222E'};">${feasibilityText}</span>`;
                 ul.appendChild(li);
@@ -656,7 +656,7 @@ function initOwnerDashboard() {
         lowStockItems.forEach(item => {
             const li = document.createElement('li');
             li.style.color = '#E9222E';
-            li.textContent = `🚨 Low Stock: ${item.name} is now ${item.stock}. Reorder level is ${item.reorderLevel}.`;
+            li.textContent = `Low Stock: ${item.name} is now ${item.stock}. Reorder level is ${item.reorderLevel}.`;
             alertList.appendChild(li);
         });
 
@@ -696,7 +696,7 @@ function initOwnerDashboard() {
         let isValid = true;
 
         if (isNaN(price) || price <= 0) {
-            constraintMessage.textContent = '❌ ERROR: Unit Price is a mandatory field and must be greater than zero.';
+            constraintMessage.textContent = 'ERROR: Unit Price is a mandatory field and must be greater than zero.';
             constraintMessage.style.display = 'block';
             isValid = false;
         }
@@ -730,7 +730,7 @@ function initOwnerDashboard() {
         let isValid = true;
         
         if (isNaN(price) || price <= 0) {
-            editConstraintMessage.textContent = '❌ ERROR: Unit Price is a mandatory field and must be greater than zero.';
+            editConstraintMessage.textContent = 'ERROR: Unit Price is a mandatory field and must be greater than zero.';
             editConstraintMessage.style.display = 'block';
             isValid = false;
         }
