@@ -128,12 +128,11 @@ function initFrontDeskDashboard() {
         
    
         const paymentActionDiv = document.getElementById('paymentActionDiv');
-        paymentActionDiv.innerHTML = ''; // Clear previous actions
+        paymentActionDiv.innerHTML = '';
 
         if (job.status === 'Completed') {
-            const totalCost = calculateJobCost(job); // Calculate the total
+            const totalCost = calculateJobCost(job);
             
-            // Display summary and payment selection
             paymentActionDiv.innerHTML = `
                 <hr style="margin-top: 20px;">
                 <h4 style="color: var(--color-jewel);">Payment Required</h4>
@@ -159,7 +158,6 @@ function initFrontDeskDashboard() {
                 </button>
             `;
             
-            // Attach dynamic listeners *after* rendering
             const methodSelect = document.getElementById('paymentMethodSelect');
             const gcashGroup = document.getElementById('gcashRefInputGroup');
             const gcashInput = document.getElementById('gcashReference');
@@ -203,7 +201,6 @@ function initFrontDeskDashboard() {
             paymentActionDiv.innerHTML = '<p style="margin-top: 15px;">Waiting for mechanic to mark job as Completed...</p>';
         }
 
-        
         // Display required/used parts
         const detailPartsList = document.getElementById('detailPartsList');
         detailPartsList.innerHTML = '';
